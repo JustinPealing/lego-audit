@@ -1,12 +1,13 @@
 import { AppProvider, useApp } from './context/AppContext'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
 import ApiKeySetup from './components/ApiKeySetup/ApiKeySetup'
+import SavedAuditsList from './components/SavedAudits/SavedAuditsList'
 import SetLookup from './components/SetLookup/SetLookup'
 import AuditView from './components/AuditView/AuditView'
 import './App.css'
 
 function AppContent() {
-  const { currentView, currentAuditId, removeApiKey } = useApp()
+  const { currentView, currentScreen, currentAuditId, removeApiKey, navigateToHome } = useApp()
   const isOnline = useOnlineStatus()
 
   // Show offline indicator
@@ -37,11 +38,34 @@ function AppContent() {
       return <ApiKeySetup />
     }
 
+    // Main view - check currentScreen for navigation
     if (currentAuditId) {
       return <AuditView />
     }
 
-    // Main view - set lookup
+    if (currentScreen === 'search') {
+      return (
+        <div className="app">
+          <header className="app-header">
+            <button
+              type="button"
+              className="back-btn"
+              onClick={navigateToHome}
+              aria-label="Back to home"
+            >
+              ← Back
+            </button>
+            <h1>Search LEGO Set</h1>
+          </header>
+          {renderOfflineIndicator()}
+          <main className="app-main">
+            <SetLookup />
+          </main>
+        </div>
+      )
+    }
+
+    // Default: home screen
     return (
       <div className="app">
         <header className="app-header">
@@ -58,7 +82,7 @@ function AppContent() {
         </header>
         {renderOfflineIndicator()}
         <main className="app-main">
-          <SetLookup />
+          <SavedAuditsList />
         </main>
       </div>
     )

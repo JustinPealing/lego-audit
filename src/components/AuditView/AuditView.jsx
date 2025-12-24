@@ -8,7 +8,7 @@ import PartsList from '../PartsList/PartsList'
 import './AuditView.css'
 
 export default function AuditView() {
-  const { currentAuditId, exitAudit } = useApp()
+  const { currentAuditId, navigateToHome } = useApp()
   const { audit, updatePartStatus } = useAuditState(currentAuditId)
 
   // If no audit is loaded and we have an ID, try to load it
@@ -17,10 +17,10 @@ export default function AuditView() {
       const loadedAudit = storage.getAudit(currentAuditId)
       if (!loadedAudit) {
         // Audit not found, go back
-        exitAudit()
+        navigateToHome()
       }
     }
-  }, [currentAuditId, audit, exitAudit])
+  }, [currentAuditId, audit, navigateToHome])
 
   if (!audit) {
     return (
@@ -45,7 +45,7 @@ export default function AuditView() {
         <button
           type="button"
           className="back-btn"
-          onClick={exitAudit}
+          onClick={navigateToHome}
           aria-label="Back to home"
         >
           ← Back

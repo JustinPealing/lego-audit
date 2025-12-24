@@ -11,6 +11,7 @@ const AppContext = createContext(null)
 export function AppProvider({ children }) {
   const [apiKey, setApiKeyState] = useState(null)
   const [currentView, setCurrentView] = useState('loading') // loading, api-setup, main
+  const [currentScreen, setCurrentScreen] = useState('home') // home, search, audit
   const [currentAuditId, setCurrentAuditId] = useState(null)
 
   // Initialize app on mount
@@ -47,17 +48,35 @@ export function AppProvider({ children }) {
   }
 
   /**
+   * Navigate to home screen
+   */
+  const navigateToHome = () => {
+    setCurrentScreen('home')
+    setCurrentAuditId(null)
+  }
+
+  /**
+   * Navigate to search screen
+   */
+  const navigateToSearch = () => {
+    setCurrentScreen('search')
+    setCurrentAuditId(null)
+  }
+
+  /**
    * Start new audit
    * @param {string} auditId - Audit ID
    */
   const startAudit = (auditId) => {
+    setCurrentScreen('audit')
     setCurrentAuditId(auditId)
   }
 
   /**
-   * Exit current audit
+   * Exit current audit (navigate back to home)
    */
   const exitAudit = () => {
+    setCurrentScreen('home')
     setCurrentAuditId(null)
   }
 
@@ -81,6 +100,9 @@ export function AppProvider({ children }) {
     // Navigation
     currentView,
     setCurrentView,
+    currentScreen,
+    navigateToHome,
+    navigateToSearch,
 
     // Current Audit
     currentAuditId,
