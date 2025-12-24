@@ -41,10 +41,11 @@ export function useRebrickableApi() {
         setProgress(progressData)
       })
 
-      // Add unique ID to each part (part_num + color_id)
+      // Add unique ID to each part (part_num + color_id + is_spare)
+      // Spare parts need separate IDs so they appear as distinct rows
       const partsWithIds = parts.map(part => ({
         ...part,
-        id: `${part.part?.part_num || 'unknown'}-${part.color?.id || '0'}`
+        id: `${part.part?.part_num || 'unknown'}-${part.color?.id || '0'}-${part.is_spare ? 'spare' : 'regular'}`
       }))
 
       const result = {

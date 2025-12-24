@@ -46,9 +46,9 @@ export function useAuditState(auditId = null) {
    * @param {object} setData - Set data from API
    */
   const createAudit = useCallback((setData) => {
-    // Calculate total by summing all part quantities (not using API's num_parts)
+    // Calculate total inventory by summing all part quantities (includes spares)
     const parts = setData.parts || []
-    const totalParts = parts.reduce((sum, part) => sum + (part.quantity || 0), 0)
+    const totalInventoryParts = parts.reduce((sum, part) => sum + (part.quantity || 0), 0)
 
     const newAudit = {
       id: generateAuditId(setData.set_num),
@@ -57,12 +57,13 @@ export function useAuditState(auditId = null) {
       setYear: setData.year,
       imageUrl: setData.set_img_url,
       theme: setData.set_url?.split('/')[4] || 'Unknown',
-      totalParts: totalParts,
+      publishedPartCount: setData.num_parts, // Official published count
+      totalParts: totalInventoryParts, // Total inventory including spares
       parts: parts,
       partsStatus: {},
       progress: {
         completed: 0,
-        total: totalParts,
+        total: totalInventoryParts,
         percentage: 0
       },
       createdAt: new Date().toISOString(),

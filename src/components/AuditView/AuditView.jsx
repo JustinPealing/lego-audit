@@ -31,11 +31,16 @@ export default function AuditView() {
     )
   }
 
+  // Calculate published part count (excluding spares) for display
+  const publishedPartCount = audit.publishedPartCount ||
+    audit.parts?.reduce((sum, part) => sum + (part.is_spare ? 0 : (part.quantity || 0)), 0) ||
+    audit.totalParts
+
   const setData = {
     set_num: audit.setNumber,
     name: audit.setName,
     year: audit.setYear,
-    num_parts: audit.totalParts,
+    num_parts: publishedPartCount,
     set_img_url: audit.imageUrl
   }
 

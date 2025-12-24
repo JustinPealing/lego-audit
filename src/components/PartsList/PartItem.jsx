@@ -61,7 +61,14 @@ export default function PartItem({ part, status, onUpdate }) {
       </div>
 
       <div className="part-info">
-        <div className="part-name">{part.part?.name || 'Unknown Part'}</div>
+        <div className="part-name">
+          {part.part?.name || 'Unknown Part'}
+          {part.is_spare && (
+            <span className="spare-badge" title="This is a spare part">
+              Spare
+            </span>
+          )}
+        </div>
         <div className="part-details">
           <span className="part-number">#{part.part?.part_num}</span>
           {part.color && (
