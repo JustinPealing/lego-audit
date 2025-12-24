@@ -1,0 +1,262 @@
+.part-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.part-item.complete {
+  background: #f0f9f0;
+  border-color: var(--color-success);
+}
+
+.part-item:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.part-image-container {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.part-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.part-image-placeholder {
+  font-size: 2rem;
+  color: var(--color-text-secondary);
+}
+
+.part-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.part-name {
+  font-weight: 600;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.part-details {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.part-number {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.part-color {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.color-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+}
+
+.part-quantity-needed {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.part-tracking {
+  flex-shrink: 0;
+}
+
+/* Checkbox mode */
+.checkbox-container {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  user-select: none;
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.part-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-custom {
+  display: block;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.part-checkbox:checked ~ .checkbox-custom {
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.part-checkbox:checked ~ .checkbox-custom::after {
+  content: '';
+  position: absolute;
+  display: block;
+  left: 11px;
+  top: 7px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container:active .checkbox-custom {
+  transform: scale(0.95);
+}
+
+/* Counter mode */
+.counter-mode-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.counter-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.counter-input {
+  width: 60px;
+  min-height: var(--touch-target-min);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  text-align: center;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-text);
+  transition: border-color 0.2s ease;
+}
+
+.counter-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* Remove spinner arrows on number input */
+.counter-input::-webkit-outer-spin-button,
+.counter-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.counter-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.counter-total-label {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+/* Indeterminate checkbox state styling */
+.checkbox-custom::after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+.part-checkbox:checked ~ .checkbox-custom::after {
+  display: block;
+  left: 11px;
+  top: 7px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.part-checkbox:indeterminate ~ .checkbox-custom {
+  background: var(--color-lego-yellow);
+  border-color: var(--color-lego-yellow);
+}
+
+.part-checkbox:indeterminate ~ .checkbox-custom::after {
+  display: block;
+  left: 8px;
+  top: 13px;
+  width: 12px;
+  height: 0;
+  border: solid white;
+  border-width: 0 0 2px 0;
+  transform: none;
+}
+
+@media (max-width: 480px) {
+  .part-item {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+
+  .part-image-container {
+    width: 50px;
+    height: 50px;
+  }
+
+  .part-name {
+    font-size: var(--font-size-sm);
+  }
+
+  .counter-input {
+    width: 50px;
+    font-size: var(--font-size-base);
+  }
+
+  .counter-total-label {
+    font-size: var(--font-size-base);
+  }
+}

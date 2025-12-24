@@ -1,0 +1,23 @@
+PWA Icons Needed
+=================
+
+For the app to function as a proper PWA, you need to add the following icon files to this directory:
+
+1. icon-192x192.png (192x192 pixels)
+   - Used for smaller displays and shortcuts
+
+2. icon-512x512.png (512x512 pixels)
+   - Used for larger displays and splash screens
+   - Should be suitable for maskable use (safe zone in center)
+
+Design Suggestions:
+- Use a simple LEGO brick icon with the app name
+- Colors: LEGO red (#d01012) as primary
+- Ensure good visibility on various backgrounds
+- Leave padding around edges for maskable icon support
+
+You can use tools like:
+- Figma or Canva for design
+- RealFaviconGenerator.net for generating different sizes
+
+Note: Until these icons are added, the PWA installation feature will not work properly.

@@ -1,0 +1,56 @@
+.tracking-mode-toggle {
+  background: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.toggle-label {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+.toggle-buttons {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex: 1;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn:hover:not(.active) {
+  background: #e8e8e8;
+  border-color: var(--color-text-secondary);
+}
+
+.toggle-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+@media (max-width: 480px) {
+  .tracking-mode-toggle {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toggle-buttons {
+    width: 100%;
+  }
+}
