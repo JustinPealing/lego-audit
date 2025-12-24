@@ -10,12 +10,6 @@ export const STORAGE_KEYS = {
   PREFERENCES: 'lego_audit_preferences'
 }
 
-// Tracking modes
-export const TRACKING_MODES = {
-  CHECKBOX: 'checkbox',
-  COUNTER: 'counter'
-}
-
 // Cache expiration times
 export const CACHE_EXPIRATION = {
   SET_DATA: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds

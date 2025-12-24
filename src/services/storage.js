@@ -173,7 +173,6 @@ class StorageService {
    */
   getPreferences() {
     return this.get(STORAGE_KEYS.PREFERENCES, {
-      trackingMode: 'checkbox',
       theme: 'light'
     })
   }

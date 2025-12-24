@@ -1,31 +1,21 @@
 import { useState } from 'react'
 import PartItem from './PartItem'
-import { TRACKING_MODES } from '../../utils/constants'
 import './PartsList.css'
 
-export default function PartsList({ parts, trackingMode, partsStatus, onUpdatePart }) {
+export default function PartsList({ parts, partsStatus, onUpdatePart }) {
   const [filter, setFilter] = useState('all') // all, complete, incomplete
 
   const filteredParts = parts.filter(part => {
     if (filter === 'all') return true
 
     const status = partsStatus[part.id]
-    if (trackingMode === TRACKING_MODES.CHECKBOX) {
-      const isComplete = status?.checked || false
-      return filter === 'complete' ? isComplete : !isComplete
-    } else {
-      const isComplete = (status?.quantity || 0) >= part.quantity
-      return filter === 'complete' ? isComplete : !isComplete
-    }
+    const isComplete = (status?.quantity || 0) >= part.quantity
+    return filter === 'complete' ? isComplete : !isComplete
   })
 
   const handleMarkAll = () => {
     parts.forEach(part => {
-      if (trackingMode === TRACKING_MODES.CHECKBOX) {
-        onUpdatePart(part.id, { checked: true, quantity: 0 })
-      } else {
-        onUpdatePart(part.id, { checked: false, quantity: part.quantity })
-      }
+      onUpdatePart(part.id, { checked: false, quantity: part.quantity })
     })
   }
 
@@ -90,7 +80,6 @@ export default function PartsList({ parts, trackingMode, partsStatus, onUpdatePa
             <PartItem
               key={part.id}
               part={part}
-              trackingMode={trackingMode}
               status={partsStatus[part.id]}
               onUpdate={onUpdatePart}
             />

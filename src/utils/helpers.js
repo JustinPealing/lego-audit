@@ -37,34 +37,26 @@ export function formatDate(date) {
  * Calculate progress for an audit
  * @param {object} partsStatus - Object mapping part IDs to their status
  * @param {object[]} parts - Array of part objects with quantities
- * @param {string} mode - Tracking mode ('checkbox' or 'counter')
  * @returns {object} Progress object with completed, total, and percentage
  */
-export function calculateProgress(partsStatus, parts, mode) {
+export function calculateProgress(partsStatus, parts) {
   if (!parts || parts.length === 0) {
     return { completed: 0, total: 0, percentage: 0 }
   }
 
-  if (mode === 'checkbox') {
-    const total = parts.length
-    const completed = parts.filter(part => partsStatus[part.id]?.checked).length
-    const percentage = Math.round((completed / total) * 100)
-    return { completed, total, percentage }
-  } else {
-    // Counter mode: sum of min(have, need) / sum of need
-    let totalNeeded = 0
-    let totalHave = 0
+  // Sum of min(have, need) / sum of need
+  let totalNeeded = 0
+  let totalHave = 0
 
-    parts.forEach(part => {
-      const needed = part.quantity || 0
-      const have = partsStatus[part.id]?.quantity || 0
-      totalNeeded += needed
-      totalHave += Math.min(have, needed)
-    })
+  parts.forEach(part => {
+    const needed = part.quantity || 0
+    const have = partsStatus[part.id]?.quantity || 0
+    totalNeeded += needed
+    totalHave += Math.min(have, needed)
+  })
 
-    const percentage = totalNeeded > 0 ? Math.round((totalHave / totalNeeded) * 100) : 0
-    return { completed: totalHave, total: totalNeeded, percentage }
-  }
+  const percentage = totalNeeded > 0 ? Math.round((totalHave / totalNeeded) * 100) : 0
+  return { completed: totalHave, total: totalNeeded, percentage }
 }
 
 /**

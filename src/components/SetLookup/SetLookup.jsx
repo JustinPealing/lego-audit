@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useRebrickableApi } from '../../hooks/useRebrickableApi'
 import { useAuditState } from '../../hooks/useAuditState'
 import { useApp } from '../../context/AppContext'
-import { TRACKING_MODES } from '../../utils/constants'
 import './SetLookup.css'
 
 export default function SetLookup() {
@@ -26,7 +25,7 @@ export default function SetLookup() {
       const setData = await fetchSet(setNumber.trim())
 
       // Create a new audit
-      const newAudit = createAudit(setData, TRACKING_MODES.CHECKBOX)
+      const newAudit = createAudit(setData)
 
       // Navigate to the audit
       startAudit(newAudit.id)

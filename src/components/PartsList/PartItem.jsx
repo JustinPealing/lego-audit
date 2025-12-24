@@ -1,54 +1,46 @@
 import { useState, useRef, useEffect } from 'react'
-import { TRACKING_MODES } from '../../utils/constants'
 import './PartItem.css'
 
-export default function PartItem({ part, trackingMode, status, onUpdate }) {
+export default function PartItem({ part, status, onUpdate }) {
   const [imageError, setImageError] = useState(false)
-  const counterCheckboxRef = useRef(null)
+  const checkboxRef = useRef(null)
 
-  // For checkbox mode
+  // Checkbox change
   const handleCheckboxChange = (e) => {
-    onUpdate(part.id, { checked: e.target.checked, quantity: 0 })
-  }
-
-  // For counter mode - checkbox change
-  const handleCounterCheckboxChange = (e) => {
     const newQuantity = e.target.checked ? part.quantity : 0
     onUpdate(part.id, { checked: false, quantity: newQuantity })
   }
 
-  // For counter mode - input change
-  const handleCounterInputChange = (e) => {
+  // Input change
+  const handleInputChange = (e) => {
     const value = parseInt(e.target.value) || 0
     const quantity = Math.max(0, Math.min(value, part.quantity))
     onUpdate(part.id, { checked: false, quantity })
   }
 
-  // Sync checkbox indeterminate state in counter mode
+  // Sync checkbox indeterminate state
   useEffect(() => {
-    if (trackingMode === TRACKING_MODES.COUNTER && counterCheckboxRef.current) {
+    if (checkboxRef.current) {
       const currentQty = status?.quantity || 0
       const required = part.quantity
 
       if (currentQty === 0) {
         // Unchecked
-        counterCheckboxRef.current.checked = false
-        counterCheckboxRef.current.indeterminate = false
+        checkboxRef.current.checked = false
+        checkboxRef.current.indeterminate = false
       } else if (currentQty >= required) {
         // Fully checked
-        counterCheckboxRef.current.checked = true
-        counterCheckboxRef.current.indeterminate = false
+        checkboxRef.current.checked = true
+        checkboxRef.current.indeterminate = false
       } else {
         // Partially checked (indeterminate)
-        counterCheckboxRef.current.checked = false
-        counterCheckboxRef.current.indeterminate = true
+        checkboxRef.current.checked = false
+        checkboxRef.current.indeterminate = true
       }
     }
-  }, [trackingMode, status?.quantity, part.quantity])
+  }, [status?.quantity, part.quantity])
 
-  const isComplete = trackingMode === TRACKING_MODES.CHECKBOX
-    ? status?.checked
-    : (status?.quantity || 0) >= part.quantity
+  const isComplete = (status?.quantity || 0) >= part.quantity
 
   return (
     <div className={`part-item ${isComplete ? 'complete' : ''}`}>
@@ -88,42 +80,30 @@ export default function PartItem({ part, trackingMode, status, onUpdate }) {
       </div>
 
       <div className="part-tracking">
-        {trackingMode === TRACKING_MODES.CHECKBOX ? (
+        <div className="counter-mode-container">
           <label className="checkbox-container">
             <input
+              ref={checkboxRef}
               type="checkbox"
-              checked={status?.checked || false}
               onChange={handleCheckboxChange}
               className="part-checkbox"
+              aria-label="Toggle complete"
             />
             <span className="checkbox-custom"></span>
           </label>
-        ) : (
-          <div className="counter-mode-container">
-            <label className="checkbox-container">
-              <input
-                ref={counterCheckboxRef}
-                type="checkbox"
-                onChange={handleCounterCheckboxChange}
-                className="part-checkbox"
-                aria-label="Toggle complete"
-              />
-              <span className="checkbox-custom"></span>
-            </label>
-            <div className="counter-input-wrapper">
-              <input
-                type="number"
-                min="0"
-                max={part.quantity}
-                value={status?.quantity || 0}
-                onChange={handleCounterInputChange}
-                className="counter-input"
-                aria-label={`Quantity (need ${part.quantity})`}
-              />
-              <span className="counter-total-label">/ {part.quantity}</span>
-            </div>
+          <div className="counter-input-wrapper">
+            <input
+              type="number"
+              min="0"
+              max={part.quantity}
+              value={status?.quantity || 0}
+              onChange={handleInputChange}
+              className="counter-input"
+              aria-label={`Quantity (need ${part.quantity})`}
+            />
+            <span className="counter-total-label">/ {part.quantity}</span>
           </div>
-        )}
+        </div>
       </div>
     </div>
   )

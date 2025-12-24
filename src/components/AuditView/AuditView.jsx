@@ -4,13 +4,12 @@ import { useAuditState } from '../../hooks/useAuditState'
 import storage from '../../services/storage'
 import SetDetails from '../SetDetails/SetDetails'
 import ProgressBar from '../AuditProgress/ProgressBar'
-import TrackingModeToggle from '../TrackingMode/TrackingModeToggle'
 import PartsList from '../PartsList/PartsList'
 import './AuditView.css'
 
 export default function AuditView() {
   const { currentAuditId, exitAudit } = useApp()
-  const { audit, updatePartStatus, changeTrackingMode } = useAuditState(currentAuditId)
+  const { audit, updatePartStatus } = useAuditState(currentAuditId)
 
   // If no audit is loaded and we have an ID, try to load it
   useEffect(() => {
@@ -59,14 +58,8 @@ export default function AuditView() {
 
         <ProgressBar progress={audit.progress} />
 
-        <TrackingModeToggle
-          currentMode={audit.trackingMode}
-          onModeChange={changeTrackingMode}
-        />
-
         <PartsList
           parts={audit.parts}
-          trackingMode={audit.trackingMode}
           partsStatus={audit.partsStatus}
           onUpdatePart={updatePartStatus}
         />

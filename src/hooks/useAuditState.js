@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import storage from '../services/storage'
 import { debounce, calculateProgress, generateAuditId } from '../utils/helpers'
-import { LIMITS, TRACKING_MODES } from '../utils/constants'
+import { LIMITS } from '../utils/constants'
 
 /**
  * Custom hook for managing audit state with auto-save
@@ -44,9 +44,8 @@ export function useAuditState(auditId = null) {
   /**
    * Create new audit
    * @param {object} setData - Set data from API
-   * @param {string} trackingMode - Tracking mode (checkbox or counter)
    */
-  const createAudit = useCallback((setData, trackingMode = TRACKING_MODES.CHECKBOX) => {
+  const createAudit = useCallback((setData) => {
     const newAudit = {
       id: generateAuditId(setData.set_num),
       setNumber: setData.set_num,
@@ -54,7 +53,6 @@ export function useAuditState(auditId = null) {
       setYear: setData.year,
       imageUrl: setData.set_img_url,
       theme: setData.set_url?.split('/')[4] || 'Unknown',
-      trackingMode,
       totalParts: setData.num_parts,
       parts: setData.parts || [],
       partsStatus: {},
@@ -89,31 +87,11 @@ export function useAuditState(auditId = null) {
         [partId]: status
       }
 
-      const newProgress = calculateProgress(newPartsStatus, prev.parts, prev.trackingMode)
+      const newProgress = calculateProgress(newPartsStatus, prev.parts)
 
       return {
         ...prev,
         partsStatus: newPartsStatus,
-        progress: newProgress
-      }
-    })
-    setIsDirty(true)
-  }, [audit])
-
-  /**
-   * Change tracking mode
-   * @param {string} mode - New tracking mode
-   */
-  const changeTrackingMode = useCallback((mode) => {
-    if (!audit) return
-
-    setAudit(prev => {
-      // Recalculate progress with new mode
-      const newProgress = calculateProgress(prev.partsStatus, prev.parts, mode)
-
-      return {
-        ...prev,
-        trackingMode: mode,
         progress: newProgress
       }
     })
@@ -142,7 +120,6 @@ export function useAuditState(auditId = null) {
     audit,
     createAudit,
     updatePartStatus,
-    changeTrackingMode,
     clearAudit,
     forceSave
   }
