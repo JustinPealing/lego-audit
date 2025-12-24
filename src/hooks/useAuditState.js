@@ -46,6 +46,10 @@ export function useAuditState(auditId = null) {
    * @param {object} setData - Set data from API
    */
   const createAudit = useCallback((setData) => {
+    // Calculate total by summing all part quantities (not using API's num_parts)
+    const parts = setData.parts || []
+    const totalParts = parts.reduce((sum, part) => sum + (part.quantity || 0), 0)
+
     const newAudit = {
       id: generateAuditId(setData.set_num),
       setNumber: setData.set_num,
@@ -53,12 +57,12 @@ export function useAuditState(auditId = null) {
       setYear: setData.year,
       imageUrl: setData.set_img_url,
       theme: setData.set_url?.split('/')[4] || 'Unknown',
-      totalParts: setData.num_parts,
-      parts: setData.parts || [],
+      totalParts: totalParts,
+      parts: parts,
       partsStatus: {},
       progress: {
         completed: 0,
-        total: setData.num_parts,
+        total: totalParts,
         percentage: 0
       },
       createdAt: new Date().toISOString(),
